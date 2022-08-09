@@ -1,0 +1,229 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="col-md-12 col-lg-12">
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="card overflow-hidden">
+        <div class="card-header d-flex justify-content-between flex-wrap">
+          <div class="header-title">
+            <h4 class="card-title mb-2">Вакансии</h4>
+          </div>
+          <div class="dropdown">
+            Сортировка
+            <span
+              class="dropdown-toggle"
+              id="dropdownMenuButton7"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              role="button"
+            >
+            </span>
+            <div
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownMenuButton7"
+            >
+             
+              <a class="dropdown-item text-info" href="{{ url_for('main.home', sort="filter_exp") }}"
+                >Сортировать по опыту</a
+              >
+              <a class="dropdown-item text-info" href="{{ url_for('main.home', sort="filter_status") }}"
+                >Сортировать по статусу</a
+              >
+            </div>
+          </div>
+          <div class="dropdown">
+            Обновление
+            <span
+              class="dropdown-toggle"
+              id="dropdownMenuButton7"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              role="button"
+            >
+            </span>
+            <div
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownMenuButton7"
+            >
+             
+              <form method="post">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <a id="check_status" class="dropdown-item text-danger" href="{{ url_for('main.receive_data') }}"
+                >Обновление вакансий</a
+              >
+              </form>
+            </div>
+          </div>
+          
+        </div>
+  
+        <div class="card-body p-0">
+          <div class="table-responsive mt-4">
+            <table
+              id="basic-table"
+              class="table table-striped mb-0"
+              role="grid"
+            >
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>ID на НН</th>
+                  <th>КОМПАНИЯ</th>
+                  <th>ЗАРПЛАТА</th>
+                  <th>НУЖЕН ОПЫТ</th>
+                  <th>СТАТУС</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in content %}
+                <tr>
+                  <td>{{item.id}}</td>
+                  <td>{{item.id_hh}}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <h6>
+                        <a href="{{url_for('main.detail', post_id=item.id)}}"
+                          >{{item.author}}</a
+                        >
+                      </h6>
+                    </div>
+                  </td>
+                  <td>{{item.salary}}</td>
+                  <td {% if item.experience != 'От 1 года до 3 лет' %} class = 'text-success' {% else %} class = 'text-warning' {% endif %}>
+                    {{item.experience}}
+                  </td>
+                  <td {% if item.status.value == 'Откликнулся' %} class = 'text-success' {% elif item.status.value == 'Новое' %} class = 'text-primary' {% else %} class = 'text-warning' {% endif %}>
+                    {{item.status.value}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer Section Start 
+              <div class="col-md-12 col-xl-6">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title">Earnings</h4>
+                    </div>
+                    <div class="dropdown">
+                      <a
+                        href="#"
+                        class="text-secondary dropdown-toggle"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        This Week
+                      </a>
+                      <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li><a class="dropdown-item" href="#">This Week</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">This Month</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div
+                      class="d-flex flex-wrap align-items-center justify-content-between"
+                    >
+                      <div id="myChart" class="col-md-8 col-lg-8 myChart"></div>
+                      <div class="d-grid gap col-md-4 col-lg-4">
+                        <div class="d-flex align-items-start">
+                          <svg
+                            class="mt-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            viewBox="0 0 24 24"
+                            fill="#3a57e8"
+                          >
+                            <g>
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                                fill="#3a57e8"
+                              ></circle>
+                            </g>
+                          </svg>
+                          <div class="ms-3">
+                            <span class="text-secondary">Fashion</span>
+                            <h6>251K</h6>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                          <svg
+                            class="mt-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            viewBox="0 0 24 24"
+                            fill="#4bc7d2"
+                          >
+                            <g>
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                                fill="#4bc7d2"
+                              ></circle>
+                            </g>
+                          </svg>
+                          <div class="ms-3">
+                            <span class="text-secondary">Accessories</span>
+                            <h6>176K</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-xl-6">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title">Conversions</h4>
+                    </div>
+                    <div class="dropdown">
+                      <a
+                        href="#"
+                        class="text-secondary dropdown-toggle"
+                        id="dropdownMenuButton3"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        This Week
+                      </a>
+                      <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton3"
+                      >
+                        <li><a class="dropdown-item" href="#">This Week</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">This Month</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div id="d-activity" class="d-activity"></div>
+                  </div>
+                </div>
+              </div>
+              -->
+  </div>
+</div>
+{% endblock %}

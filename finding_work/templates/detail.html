@@ -1,0 +1,267 @@
+{% extends 'base.html' %} {% block content %}
+
+
+
+          <div class="col-md-12 col-lg-8">
+            <div class="row">
+              <div class="col-md-12 col-lg-12">
+                <div class="card overflow-hidden">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title mb-2">Вакансии</h4>
+                    </div>
+                    
+                  </div>
+                  <div class="card-body p-0">
+                    <div class="table-responsive mt-4">
+                      <table
+                        id="basic-table"
+                        class="table table-striped mb-0"
+                        role="grid"
+                      >
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>КОМПАНИЯ</th>
+                            <th>ОПЫТ</th>
+                            <th>СТАТУС</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for item in content %}
+                <tr {% if item.id == post.id %} style="background-color:cyan;"{% endif %}>
+                  <td>{{item.id}}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <h6>
+                        <a href="{{url_for('main.detail', post_id=item.id)}}"
+                          >{{item.author}}</a
+                        >
+                      </h6>
+                    </div>
+                  </td>
+                  
+                  <td {% if item.experience == 'Нет опыта' %} class = 'text-success' {% else %} class = 'text-warning' {% endif %}>
+                    {{item.experience}}
+                  </td>
+                  <td {% if item.status.value == 'Откликнулся' %} class = 'text-success' {% elif item.status.value == 'Новое' %} class = 'text-primary' {% else %} class = 'text-warning' {% endif %}>
+                    {{item.status.value}}</td>
+                </tr>
+                {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--
+              <div class="col-md-12 col-xl-6">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title">Earnings</h4>
+                    </div>
+                    <div class="dropdown">
+                      <a
+                        href="#"
+                        class="text-secondary dropdown-toggle"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        This Week
+                      </a>
+                      <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li><a class="dropdown-item" href="#">This Week</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">This Month</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div
+                      class="d-flex flex-wrap align-items-center justify-content-between"
+                    >
+                      <div id="myChart" class="col-md-8 col-lg-8 myChart"></div>
+                      <div class="d-grid gap col-md-4 col-lg-4">
+                        <div class="d-flex align-items-start">
+                          <svg
+                            class="mt-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            viewBox="0 0 24 24"
+                            fill="#3a57e8"
+                          >
+                            <g>
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                                fill="#3a57e8"
+                              ></circle>
+                            </g>
+                          </svg>
+                          <div class="ms-3">
+                            <span class="text-secondary">Fashion</span>
+                            <h6>251K</h6>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                          <svg
+                            class="mt-2"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="14"
+                            viewBox="0 0 24 24"
+                            fill="#4bc7d2"
+                          >
+                            <g>
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="8"
+                                fill="#4bc7d2"
+                              ></circle>
+                            </g>
+                          </svg>
+                          <div class="ms-3">
+                            <span class="text-secondary">Accessories</span>
+                            <h6>176K</h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-xl-6">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title">Conversions</h4>
+                    </div>
+                    <div class="dropdown">
+                      <a
+                        href="#"
+                        class="text-secondary dropdown-toggle"
+                        id="dropdownMenuButton3"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        This Week
+                      </a>
+                      <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        aria-labelledby="dropdownMenuButton3"
+                      >
+                        <li><a class="dropdown-item" href="#">This Week</a></li>
+                        <li>
+                          <a class="dropdown-item" href="#">This Month</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">This Year</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div id="d-activity" class="d-activity"></div>
+                  </div>
+                </div>
+              </div>
+            -->
+
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-4">
+            <div class="row">
+              <div class="col-md-12 col-lg-12">
+                <div class="card">
+                  <div
+                    class="card-body d-flex justify-content-around text-center"
+                  >
+                    <div>
+                      <h4 class="mb-2">{{post.id}}</h4>
+                      <p class="mb-0 text-secondary">ID</p>
+                    </div>
+                  <hr class="hr-vertial" />  
+                  <div>
+                      <h4 class="mb-2">{{post.author}}</h4>
+                      <p class="mb-0 text-secondary">КОМПАНИЯ</p>
+                    </div>
+                    
+                  </div>
+                </div>
+
+              <div class="col-md-12 col-lg-12">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title mb-2">{{post.title}}</h4>
+                      <h5 class="card-title mb-2">{{post.salary}}</h5>
+                      <h5 class="card-title mb-2"><b>Опыт работы: </b>{{post.experience}}</h5>
+                      <p class="mb-0">
+                      {{post.content | safe}}  
+                      </p>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <!-- Поле ввода формы -->
+                    <form method="post" action="">
+                        {{ form2.csrf_token }} 
+                    {{ form2.status(class="form-select") }}
+                    <p class="mb-4">
+                    </p>
+                        <div class="d-grid grid-cols-2 gap">
+                      {{ form2.submit(class="btn btn-primary text-uppercase") }}
+                      
+                    </form>  
+                      <a href="{{post.href}}" class="btn btn-danger text-uppercase" target="_blank">
+                        ПЕРЕХОД НА НН
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+              
+              <div class="col-md-12 col-lg-12">
+                <div class="card">
+                  <div
+                    class="card-header d-flex justify-content-between flex-wrap"
+                  >
+                    <div class="header-title">
+                      <h4 class="card-title mb-2">Заметка</h4>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                     <form method="post" action="">
+                        {{ form.csrf_token }} 
+                        
+                        {{ form.note(class="form-control w-100", rows='10') }}    
+                    <!-- Поле ввода формы -->
+                    <p class="mb-4">
+                    </p>
+                      
+                    {{ form.submit(class="btn btn-info text-uppercase") }}
+                    </form>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer Section Start -->
+
+{% endblock %}

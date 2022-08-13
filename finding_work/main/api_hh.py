@@ -14,26 +14,28 @@ url = 'https://api.hh.ru/vacancies/?text=python&search_field=name&experience=noE
 url2 = 'https://api.hh.ru/vacancies/'
 
 
-def receive_update(vacancy):
-    post_item = Post.query.filter(Post.id_hh == vacancy['id']).first()
-    # если такая вакансия уже есть в БД
-    if post_item:
-        if 'errors' in vacancy.keys():
-            post_item.status = 'CLOSED'
+def receive_update(vacancy, ids):
+    if 'id' in vacancy:  # если вакансия имеет ключ id, т.е. актуальна
+        post_item = Post.query.filter(Post.id_hh == vacancy['id']).first()
+        # если такой вакансии нет в БД
+        if not post_item:
+            print('Новая вакансия: ', post_item)
+            if vacancy['salary']:
+                vacancy['salary'] = str(vacancy['salary']['from']) + ' - ' + str(
+                    vacancy['salary']['to']) + ' ' + vacancy['salary']['currency']
+            else:
+                vacancy['salary'] = 'Зарплата не указана'
+            new_post = Post(id_hh=int(vacancy['id']), href='https://ryazan.hh.ru/vacancy/'+vacancy['id'], title=vacancy['name'], author=vacancy['employer']['name'],
+                            salary=vacancy['salary'], experience=vacancy['experience']['name'], type_of_work=vacancy['schedule']['name'], content=vacancy['description'], status='NEW', note=None)
+            db.session.add(new_post)
             db.session.commit()
-            current_app.logger.warning(
-                f'Вакансия с ID {post_item.id} - {post_item.author} была закрыта.')
-    else:
-        if vacancy['salary']:
-            vacancy['salary'] = str(vacancy['salary']['from']) + ' - ' + str(
-                vacancy['salary']['to']) + ' ' + vacancy['salary']['currency']
-        else:
-            vacancy['salary'] = 'Зарплата не указана'
-        new_post = Post(id_hh=int(vacancy['id']), href='https://ryazan.hh.ru/vacancy/'+vacancy['id'], title=vacancy['name'], author=vacancy['employer']['name'],
-                        salary=vacancy['salary'], experience=vacancy['experience']['name'], type_of_work=vacancy['schedule']['name'], content=vacancy['description'], status='NEW', note=None)
-
-        db.session.add(new_post)
+    else:  # вакансия не пришла значит объявление закрыто
+        print("Вакансия с", ids, "закрыта.")
+        post_item = Post.query.filter(Post.id_hh == ids).first()
+        post_item.status = 'CLOSED'
         db.session.commit()
+        current_app.logger.warning(
+            f'Вакансия с ID {post_item.id} - {post_item.author} была закрыта.')
 
 
 def receive_all_vacancies(id_list):
@@ -44,8 +46,8 @@ def receive_all_vacancies(id_list):
     new_id_list = set(id_list)
     for ids in new_id_list:
         # запрос на просмотр вакансии
-        vacancy = send_request(url=url2+str(ids), id=False)
-        receive_update(vacancy)
+        vacancy = send_request_vacancy(url=url2+str(ids))
+        receive_update(vacancy, ids)
 
 
 def receive_all_id():
@@ -63,25 +65,30 @@ def receive_all_id():
                 break
     # если количество вакансий по апи равно количеству полученных id
     if len(id_list) == all_id:
+        current_app.logger.info("Список ID получен успешно.")
+        print('Список ID получен успешно.')
         receive_all_vacancies(id_list)
         return True
     return False
 
 
-# отправка запроса и возврат значений
-def send_request(url, headers=user_agent, first=False, id=True):
+# отправка запроса на получение списка ID
+def send_request(url, headers=user_agent, first=False):
     while True:
         res = requests.get(url, headers)
-        if res.status_code == 200:
+        if res.status_code == 200:  # если 200
             res_json = json.loads(res.text)
-            if id:
-                id_list_temp = [int(id['id']) for id in res_json['items']]
-                if first:
-                    all = res_json['found']
-                    pages = res_json['pages']
-                    return all, pages, id_list_temp
-                return id_list_temp
-            else:
-                # возвращаем вакансию
-                return res_json
-        time.sleep(random.randint(1,3))
+            id_list_temp = [int(id['id']) for id in res_json['items']]
+            if first:
+                all = res_json['found']
+                pages = res_json['pages']
+                return all, pages, id_list_temp
+            return id_list_temp
+        time.sleep(random.randint(1, 3))
+
+
+# отправка запроса на получение вакансии
+def send_request_vacancy(url, headers=user_agent):
+    res = requests.get(url, headers)
+    res_json = json.loads(res.text)
+    return res_json

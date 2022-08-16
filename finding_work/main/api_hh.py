@@ -19,7 +19,7 @@ def receive_update(vacancy, ids):
         post_item = Post.query.filter(Post.id_hh == vacancy['id']).first()
         # если такой вакансии нет в БД
         if not post_item:
-            print('Новая вакансия: ', post_item)
+            print(f"Новая вакансия: {vacancy['employer']['name']}")
             if vacancy['salary']:
                 vacancy['salary'] = str(vacancy['salary']['from']) + ' - ' + str(
                     vacancy['salary']['to']) + ' ' + vacancy['salary']['currency']
@@ -29,6 +29,8 @@ def receive_update(vacancy, ids):
                             salary=vacancy['salary'], experience=vacancy['experience']['name'], type_of_work=vacancy['schedule']['name'], content=vacancy['description'], status='NEW', note=None)
             db.session.add(new_post)
             db.session.commit()
+            current_app.logger.warning(
+                f'Новая вакансия с ID {int(vacancy["id"])} внесена в базу данных.')
     else:  # вакансия не пришла значит объявление закрыто
         print("Вакансия с", ids, "закрыта.")
         post_item = Post.query.filter(Post.id_hh == ids).first()

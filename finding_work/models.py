@@ -10,6 +10,7 @@ csrf = CSRFProtect()
 class Status_Post(enum.Enum):
     NEW = "Новое"
     ANSWER = "Откликнулся"
+    NOT_INTERESTING = "Не интересно(сложно)"
     REJECT = "Отказано"
     CLOSED = 'Объявление закрыто'
 

@@ -1,1 +1,1 @@
-web: gunicorn finding_work.app:app --timeout 10
+web: gunicorn finding_work.app:app

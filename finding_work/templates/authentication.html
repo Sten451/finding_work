@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>Hope UI | Responsive Bootstrap 5 Admin Dashboard Template</title>
+
+    <!-- Favicon -->
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
+    />
+
+    <!-- Library / Plugin Css Build -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/libs.min.css') }}"
+    />
+
+    <!-- Custom Css -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/hope-ui.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container" style="margin: 50 auto">
+      <div class="" style="margin: 70px auto">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+              <h4 class="card-title">Форма авторизации</h4>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Форма авторизации.</p>
+            <form method="post" action="">
+                {{ form.csrf_token }}
+              <div class="form-group">
+                <label class="form-label" for="email">Логин:</label>
+                {{ form.username(class="form-control") }}
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="pwd">Пароль:</label>
+                {{ form.password(class="form-control") }}
+              </div>
+              {{ form.submit(class="btn btn-primary") }}
+              <a href="{{ url_for("main.home")}}" class="btn btn-danger">На главную</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

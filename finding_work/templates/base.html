@@ -112,18 +112,26 @@
             id="navbarsExampleDefault"
           >
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
+              {% if current_user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
-                  >Dashboard</a
+                <a class="nav-link" href="{{ url_for('user.logout')}}"
+                  >LOG_IN: {{current_user.username}} - {{current_user.user_status}}, Выйти</a
+                >
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('user.authentication')}}"
+                  >Войти</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Notifications</a>
+                <a class="nav-link" href="{{ url_for('user.registrations')}}"
+                  >Регистрация</a
+                >
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
-              </li>
+              {% endif %}
             </ul>
+            <!--
             <form class="d-flex">
               <input
                 class="form-control me-2"
@@ -133,7 +141,7 @@
               />
               <button class="btn btn-primary" type="submit">Search</button>
             </form>
-          </div>
+          --></div>
         </div>
       </nav>
 
@@ -186,9 +194,7 @@
                             <h4 class="alert-heading">Внимание!</h4>
                             <p>Происходит проверка актуальности объявлений.</p>
                             <hr />
-                            <p class="mb-0">
-                              Дождитесь окончания процесса.
-                            </p>
+                            <p class="mb-0">Дождитесь окончания процесса.</p>
                           </div>
                         </div>
                       </div>

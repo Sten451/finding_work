@@ -31,6 +31,7 @@
               >
             </div>
           </div>
+          {% if current_user.is_authenticated and current_user.user_status == 'CLIENT' %}
           <div class="dropdown">
             Обновление
             <span
@@ -52,9 +53,10 @@
                 >Обновление вакансий</a
               >
               </form>
+              
             </div>
           </div>
-          
+          {% endif %}
         </div>
   
         <div class="card-body p-0">

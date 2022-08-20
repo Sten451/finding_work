@@ -1,0 +1,1 @@
+web: gunicorn finding_work.app:app

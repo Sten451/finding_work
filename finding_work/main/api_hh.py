@@ -4,7 +4,8 @@ import time
 import requests
 import json
 from flask import current_app
-from finding_work.finding_work.models import Post, db
+from flask_login import current_user
+from finding_work.models import Post, db
 
 
 user_agent = {'User-agent': 'Mozilla/5.0; Chrome/103.0.0.0 Safari/537.36'}
@@ -26,7 +27,7 @@ def receive_update(vacancy, ids):
             else:
                 vacancy['salary'] = 'Зарплата не указана'
             new_post = Post(id_hh=int(vacancy['id']), href='https://ryazan.hh.ru/vacancy/'+vacancy['id'], title=vacancy['name'], author=vacancy['employer']['name'],
-                            salary=vacancy['salary'], experience=vacancy['experience']['name'], type_of_work=vacancy['schedule']['name'], content=vacancy['description'], status='NEW', note=None)
+                            salary=vacancy['salary'], experience=vacancy['experience']['name'], type_of_work=vacancy['schedule']['name'], content=vacancy['description'], status='NEW', note=None, user_id=current_user.id)
             db.session.add(new_post)
             db.session.commit()
             current_app.logger.warning(

@@ -1,5 +1,5 @@
 """АПИ НН"""
-import random
+from random import random
 import time
 import requests
 import json
@@ -49,7 +49,7 @@ def receive_all_vacancies(id_list):
     new_id_list = set(id_list)
     for ids in new_id_list:
         # запрос на просмотр вакансии только для Heroku делаем задержку
-        time.sleep(random)
+        time.sleep(random())
         vacancy = send_request_vacancy(url=url2+str(ids))
         receive_update(vacancy, ids)
 

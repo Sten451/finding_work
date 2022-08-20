@@ -48,7 +48,8 @@ def receive_all_vacancies(id_list):
     id_list.extend(current_id_list)
     new_id_list = set(id_list)
     for ids in new_id_list:
-        # запрос на просмотр вакансии
+        # запрос на просмотр вакансии только для Heroku делаем задержку
+        time.sleep(random)
         vacancy = send_request_vacancy(url=url2+str(ids))
         receive_update(vacancy, ids)
 

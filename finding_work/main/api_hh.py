@@ -1,5 +1,5 @@
 """АПИ НН"""
-from random import random
+import random
 import time
 import requests
 import json
@@ -49,7 +49,7 @@ def receive_all_vacancies(id_list):
     new_id_list = set(id_list)
     for ids in new_id_list:
         # запрос на просмотр вакансии только для Heroku делаем задержку
-        time.sleep(random())
+        time.sleep(random.random())
         vacancy = send_request_vacancy(url=url2+str(ids))
         receive_update(vacancy, ids)
 
@@ -93,6 +93,13 @@ def send_request(url, headers=user_agent, first=False):
 
 # отправка запроса на получение вакансии
 def send_request_vacancy(url, headers=user_agent):
-    res = requests.get(url, headers)
-    res_json = json.loads(res.text)
-    return res_json
+    for i in range(100):
+        time.sleep(random.random())
+        res = requests.get(url, headers)
+        if res.status_code != 200 or res.status_code != 404:
+            print(
+                f"Попытка № {i} получить данные не удалась {res.status_code}")
+            continue
+        else:
+            res_json = json.loads(res.text)
+            return res_json

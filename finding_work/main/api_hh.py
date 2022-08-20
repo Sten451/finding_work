@@ -96,10 +96,9 @@ def send_request_vacancy(url, headers=user_agent):
     for i in range(100):
         time.sleep(random.random())
         res = requests.get(url, headers)
-        if res.status_code != 200 or res.status_code != 404:
-            print(
-                f"Попытка № {i} получить данные не удалась {res.status_code}")
-            continue
-        else:
+        if (res.status_code == 200) or (res.status_code == 404):
             res_json = json.loads(res.text)
             return res_json
+        else:
+            print(
+                f"Попытка № {i} получить данные не удалась {res.status_code}")

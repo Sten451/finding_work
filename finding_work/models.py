@@ -22,6 +22,7 @@ class Status_Post(enum.Enum):
     ANSWER = "Откликнулся"
     NOT_INTERESTING = "Не интересно(сложно)"
     REJECT = "Отказано"
+    ARCHIVED = "Архив"
     CLOSED = 'Объявление закрыто'
 
 

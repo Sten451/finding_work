@@ -25,7 +25,7 @@
                           <tr>
                             <th>ID</th>
                             <th>КОМПАНИЯ</th>
-                            <th>ОПЫТ</th>
+                            <th>ДОЛЖНОСТЬ</th>
                             <th>СТАТУС</th>
                           </tr>
                         </thead>
@@ -36,17 +36,17 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <h6>
-                        <a href="{{url_for('main.detail', post_id=item.id)}}"
+                        <a style="font-size:10px" href="{{url_for('main.detail', post_id=item.id)}}"
                           >{{item.author}}</a
                         >
                       </h6>
                     </div>
                   </td>
                   
-                  <td {% if item.experience == 'Нет опыта' %} class = 'text-success' {% else %} class = 'text-warning' {% endif %}>
-                    {{item.experience}}
+                  <td style="font-size:11px"> 
+                    {{item.title}}
                   </td>
-                  <td {% if item.status.value == 'Откликнулся' %} class = 'text-success' {% elif item.status.value == 'Новое' %} class = 'text-primary' {% else %} class = 'text-warning' {% endif %}>
+                  <td  style="font-size:11px" {% if item.status.value == 'Откликнулся' %} class = 'text-success' {% elif item.status.value == 'Новое' %} class = 'text-primary' {% else %} class = 'text-warning' {% endif %}>
                     {{item.status.value}}</td>
                 </tr>
                 {% endfor %}

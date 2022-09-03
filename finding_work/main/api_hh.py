@@ -1,8 +1,9 @@
 """АПИ НН"""
 import random
 import time
-import requests
 import json
+import requests
+
 from flask import current_app
 from flask_login import current_user
 from finding_work.models import Post, db
@@ -16,8 +17,14 @@ url2 = 'https://api.hh.ru/vacancies/'
 
 
 def receive_update(vacancy, ids):
-    if 'id' in vacancy:  # если вакансия имеет ключ id, т.е. актуальна
+    if 'id' in vacancy:  # если вакансия имеет ключ id, т.е. актуальна или в архиве
         post_item = Post.query.filter(Post.id_hh == vacancy['id']).first()
+        # если вакансия в архиве
+        if post_item and vacancy['archived']:
+            post_item.status = 'ARCHIVED'
+            db.session.commit()
+            current_app.logger.warning(
+                f'Вакансия с ID {post_item.id} - {post_item.author} была помещена в архив.')
         # если такой вакансии нет в БД
         if not post_item:
             print(f"Новая вакансия: {vacancy['employer']['name']}")
@@ -94,7 +101,7 @@ def send_request(url, headers=user_agent, first=False):
 # отправка запроса на получение вакансии
 def send_request_vacancy(url, headers=user_agent):
     for i in range(100):
-        time.sleep(random.random())
+        # time.sleep(random.random())
         res = requests.get(url, headers)
         if (res.status_code == 200) or (res.status_code == 404):
             res_json = json.loads(res.text)
